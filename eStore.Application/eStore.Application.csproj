@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eStore.Contracts\eStore.Contracts.csproj" />
+    <ProjectReference Include="..\eStore.Domain\eStore.Domain.csproj" />
+    <ProjectReference Include="..\eStore.Infrastructure\eStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\eStore.Shared\eStore.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
