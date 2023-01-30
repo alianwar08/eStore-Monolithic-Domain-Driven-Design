@@ -1,5 +1,4 @@
-**Monolithic eCommerce application with domain driven design principles
-**
+**Monolithic eCommerce application with domain driven design principles**
 
 **Applied Domain-Driven Design (DDD**)
 As I began my journey learning Domain-Driven Design, I encountered a significant amount of theory presented by Eric Evans in a clear and comprehensive manner. As a software engineer, I sought to supplement my understanding with code examples, but found limited resources in this area for C#.
@@ -24,7 +23,7 @@ A monolithic eCommerce application built using Domain-Driven Design (DDD) princi
 
 The monolithic application would have a single codebase, a single database, and a single deployment unit. 
 
-In a DDD-based eCommerce application, the focus would be on the domain model and its interactions with the rest of the system. The domain model would be rich and expressive, capturing the business requirements and the core business logic of the eCommerce application.
+In a DDD-based eCommerce application, the focus would be on the domain model and its interactions with the rest of the system. The domain model would be rich and expressive, capturing the business requirements and the core business logic of the eCommerce application. 
 
 The domain model can be tested in isolation, without having to access the database or any other external system. This makes the application easier to test, understand, and maintain, as well as helping to ensure that the business logic remains decoupled from the infrastructure.
 
