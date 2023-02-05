@@ -17,13 +17,13 @@ namespace eStore.Api.Controllers
         }
         
         [HttpPost("GetProduct")]
-        public GetProductResponse GetProduct(GetProductRequest request)
+        public async Task<GetProductResponse> GetProduct(GetProductRequest request)
         {
             GetProductResponse response;
             try
             {
                 var IM = new InventoryMangementAS();
-                response = IM.GetProduct(request);
+                response = await IM.GetProduct(request);
                 return response;
             }
 
@@ -39,13 +39,13 @@ namespace eStore.Api.Controllers
         }
 
         [HttpPost("AddProduct")]
-        public AddProductResponse AddProduct(AddProductRequest request)
+        public async Task<AddProductResponse> AddProduct(AddProductRequest request)
         {
             AddProductResponse response;
             try
             {
                 var IM = new InventoryMangementAS();
-                response = IM.AddProduct(request);
+                response = await IM.AddProduct(request);
                 return response;
             }
             catch (Exception ex)
@@ -61,13 +61,13 @@ namespace eStore.Api.Controllers
 
 
         [HttpPost("ChangeProductStatus")]
-        public ChangeProductStatusResponse ChangeProductStatus(ChangeProductStatusRequest request)
+        public async Task<ChangeProductStatusResponse> ChangeProductStatus(ChangeProductStatusRequest request)
         {
             ChangeProductStatusResponse response;
             try
             {
                 var IM = new InventoryMangementAS();
-                response = IM.ChangeProductStatus(request);
+                response = await IM.ChangeProductStatus(request);
                 return response;
             }
 

@@ -17,13 +17,13 @@ namespace eStore.Api.Controllers
         }
         
         [HttpPost("AddCustomer")]
-        public AddCustomerResponse AddCustomer(AddCustomerRequest request)
+        public async Task<AddCustomerResponse> AddCustomer(AddCustomerRequest request)
         {
             AddCustomerResponse response;
             try
             {
                 var IM = new CustomerMangementAS();
-                response = IM.AddCustomer(request);
+                response = await IM.AddCustomer(request);
                 return response;
             }
 
@@ -40,13 +40,13 @@ namespace eStore.Api.Controllers
 
 
         [HttpPost("GetCustomer")]
-        public GetCustomerResponse GetCustomer(GetCustomerRequest request)
+        public async Task<GetCustomerResponse> GetCustomer(GetCustomerRequest request)
         {
             GetCustomerResponse response;
             try
             {
                 var IM = new CustomerMangementAS();
-                response = IM.GetCustomer(request);
+                response = await IM.GetCustomer(request);
                 return response;
             }
 

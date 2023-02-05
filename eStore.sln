@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Contracts", "eStore.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{5C9CAD20-AD23-41DC-B713-75FB6A23F5BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Api", "eStore.Api\eStore.Api.csproj", "{32CEEFDB-2C0B-4845-9C43-98AB2415FF8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Api", "eStore.Api\eStore.Api.csproj", "{32CEEFDB-2C0B-4845-9C43-98AB2415FF8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Api.Console.Test", "eStore.Console\eStore.Api.Console.Test.csproj", "{9B4954F3-DFAF-44E6-9CB5-B81B708D7664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Api.Console.Test", "eStore.Console\eStore.Api.Console.Test.csproj", "{9B4954F3-DFAF-44E6-9CB5-B81B708D7664}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{B41F032A-0217-4BB2-A8E5-55D90D32C87B}"
 EndProject

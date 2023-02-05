@@ -7,7 +7,6 @@ using eStore.Contracts.DTOs;
 using eStore.Contracts;
 using eStore.Api.Controllers;
 using Microsoft.Extensions.Logging;
-
 Console.WriteLine("Adding Products");
 //Console.ReadLine();
 
@@ -16,7 +15,7 @@ var CM = new CustomerMangementController(LoggerFactory.Create(logging => logging
 var OM = new OrderManagementController(LoggerFactory.Create(logging => logging.AddConsole()).CreateLogger<OrderManagementController>());
 
 
-var p1 = IM.GetProduct(new GetProductRequest() { Barcode = "BR001" });
+var p1 = await IM.GetProduct(new GetProductRequest() { Barcode = "BR001" });
 if (p1.Product == null)
 {
     var pr = IM.AddProduct(new AddProductRequest()
@@ -30,17 +29,17 @@ if (p1.Product == null)
         Status = ENUMS.ProductStatus.InStock
     });
     Console.WriteLine("Product Added");
-    Console.WriteLine(pr.ToString());
-    p1 = IM.GetProduct(new GetProductRequest() { Barcode = "BR001" });
+    Console.WriteLine(pr.Result.ToString());
+    p1 = await IM.GetProduct(new GetProductRequest() { Barcode = "BR001" });
 }
 else Console.WriteLine("Product already exisit");
 Console.WriteLine("");
 
 
-var p2 = IM.GetProduct(new GetProductRequest() { Barcode = "BR002" });
+var p2 = await IM.GetProduct(new GetProductRequest() { Barcode = "BR002" });
 if (p2.Product == null)
 {
-    var pr = IM.AddProduct(new AddProductRequest()
+    var pr = await IM.AddProduct(new AddProductRequest()
     {
         Barcode = "BR002",
         Category = "Clothing",
@@ -52,7 +51,7 @@ if (p2.Product == null)
     });
     Console.WriteLine("Product Added");
     Console.WriteLine(pr.ToString());
-    p2 = IM.GetProduct(new GetProductRequest() { Barcode = "BR002" });
+    p2 = await IM.GetProduct(new GetProductRequest() { Barcode = "BR002" });
 }
 else Console.WriteLine("Product already exisit");
 Console.WriteLine("");
@@ -61,10 +60,10 @@ var ChangeProductStatusResponse = IM.ChangeProductStatus(new ChangeProductStatus
 Console.WriteLine("Product(BR002) status changes");
 Console.WriteLine("");
 
-var c1 = CM.GetCustomer(new GetCustomerRequest() { Email = "ElenaLynnyk@sgp.Technology" });
+var c1 = await CM.GetCustomer(new GetCustomerRequest() { Email = "ElenaLynnyk@sgp.Technology" });
 if (c1.Customer == null)
 {
-    var cr = CM.AddCustomer(new AddCustomerRequest()
+    var cr = await CM.AddCustomer(new AddCustomerRequest()
     {
         Name = "Elena Lynnyk",
         Email = "ElenaLynnyk@sgp.Technology",
@@ -72,15 +71,15 @@ if (c1.Customer == null)
     });
     Console.WriteLine("Customer Added");
     Console.WriteLine(cr.ToString());
-    c1 = CM.GetCustomer(new GetCustomerRequest() { Email = "ElenaLynnyk@sgp.Technology" });
+    c1 = await CM.GetCustomer(new GetCustomerRequest() { Email = "ElenaLynnyk@sgp.Technology" });
 }
 else { Console.WriteLine("Customer already exsist"); }
 Console.WriteLine("");
 
-var c2 = CM.GetCustomer(new GetCustomerRequest() { Email = "alianwar08@gmail.com" });
+var c2 = await CM.GetCustomer(new GetCustomerRequest() { Email = "alianwar08@gmail.com" });
 if (c2.Customer == null)
 {
-    var cr = CM.AddCustomer(new AddCustomerRequest()
+    var cr = await CM.AddCustomer(new AddCustomerRequest()
     {
         Name = "Ali Anwar",
         Email = "alianwar08@gmail.com",
@@ -88,17 +87,17 @@ if (c2.Customer == null)
     });
     Console.WriteLine("Customer Added");
     Console.WriteLine(cr.ToString());
-    c2 = CM.GetCustomer(new GetCustomerRequest() { Email = "alianwar08@gmail.com" });
+    c2 = await CM.GetCustomer(new GetCustomerRequest() { Email = "alianwar08@gmail.com" });
 }
 else { Console.WriteLine("Customer already exsist"); }
 Console.WriteLine("");
 
 
-var cartResponse = OM.GetCart(new GetCartRequest() { CustomerId = c1.Customer.CustomerId });
+var cartResponse = await OM.GetCart(new GetCartRequest() { CustomerId = c1.Customer.CustomerId });
 if (cartResponse.Cart == null)
 {
     Guid[] pids = { p1.Product.ProductId };
-    var cartR = OM.CreateOrUpdateCart(new CreateOrUpdateCartRequest()
+    var cartR = await OM.CreateOrUpdateCart(new CreateOrUpdateCartRequest()
     {
         CustomerId = c1.Customer.CustomerId,
         ProductIds = pids
@@ -110,12 +109,11 @@ else { Console.WriteLine("Cart already exsist"); }
 
 Console.WriteLine("");
 
-var checkOutCartResponse = OM.CheckOutCart(new CheckOutCartRequest()
+var checkOutCartResponse = await OM.CheckOutCart(new CheckOutCartRequest()
 {
     CustomerId = c1.Customer.CustomerId
 });
 Console.WriteLine("Customer order placed");
 Console.WriteLine(checkOutCartResponse);
 Console.WriteLine("");
-
 

@@ -16,7 +16,7 @@ namespace eStore.Application
 {
     public class InventoryMangementAS
     {
-        public AddProductResponse AddProduct(AddProductRequest request)
+        public async Task<AddProductResponse> AddProduct(AddProductRequest request)
         {
             var response = new AddProductResponse();
 
@@ -32,7 +32,7 @@ namespace eStore.Application
                     request.Status,
                     request.Price );
 
-                gr.AddProduct(p);
+                await gr.AddProduct(p);
                 response.Product = p.Adapt<ProductDto>();
                 response.IsSuccess = true;
 
@@ -52,7 +52,7 @@ namespace eStore.Application
             return response;
         }
 
-        public ChangeProductStatusResponse ChangeProductStatus(ChangeProductStatusRequest request)
+        public async Task<ChangeProductStatusResponse> ChangeProductStatus(ChangeProductStatusRequest request)
         {
             var response = new ChangeProductStatusResponse();
 
@@ -60,7 +60,7 @@ namespace eStore.Application
             try
             {
                 var gr = new GenericRepositery();
-                gr.ChangeProductStatus(request.ProductId, request.NewStatus);
+                await gr.ChangeProductStatus(request.ProductId, request.NewStatus);
                 response.IsSuccess = true;
 
             }
@@ -81,14 +81,14 @@ namespace eStore.Application
         }
 
 
-        public GetProductResponse GetProduct(GetProductRequest request)
+        public async Task<GetProductResponse> GetProduct(GetProductRequest request)
         {
             var response = new GetProductResponse();
 
             var gr = new GenericRepositery();
             try
             {
-                var c = gr.GetProductByBarcode(request.Barcode);
+                var c = await gr.GetProductByBarcode(request.Barcode);
 
                 if (c != null)
                 {

@@ -17,7 +17,7 @@ namespace eStore.Application
 {
     public class CustomerMangementAS
     {
-        public AddCustomerResponse AddCustomer(AddCustomerRequest request)
+        public async Task<AddCustomerResponse> AddCustomer(AddCustomerRequest request)
         {
             var response = new AddCustomerResponse();
 
@@ -30,7 +30,7 @@ namespace eStore.Application
                      request.ShippingAddress);
                     
 
-                gr.AddCustomer(p);
+                await gr.AddCustomer(p);
                 response.Customer = p.Adapt<CustomerDto>();
                 response.IsSuccess = true;
 
@@ -50,14 +50,14 @@ namespace eStore.Application
             return response;
         }
 
-        public GetCustomerResponse GetCustomer(GetCustomerRequest request)
+        public async Task<GetCustomerResponse> GetCustomer(GetCustomerRequest request)
         {
             var response = new GetCustomerResponse();
 
             var gr = new GenericRepositery();
             try
             {
-                var c = gr.GetCustomerByEmail(request.Email);
+                var c = await gr.GetCustomerByEmail(request.Email);
 
                 if (c != null)
                 {

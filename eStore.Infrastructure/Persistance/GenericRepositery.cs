@@ -18,11 +18,11 @@ namespace eStore.Infrastructure.Persistance
         private InventoryDbContext _db = new InventoryDbContext();
 
 
-        public CustomerDE GetCustomer(Guid customerId)
+        public async Task<CustomerDE> GetCustomer(Guid customerId)
         {
-            var drCust = (from n in _db.Customers   
+            var drCust = await (from n in _db.Customers   
                       where n.CustomerId == customerId
-                      select n).FirstOrDefault();
+                      select n).FirstOrDefaultAsync();
 
             if (drCust == null)
                 return null;
@@ -33,11 +33,11 @@ namespace eStore.Infrastructure.Persistance
             return custDE;
 
         }
-        public CustomerDE GetCustomerByEmail(string email)
+        public async Task<CustomerDE> GetCustomerByEmail(string email)
         {
-            var drCust = (from n in _db.Customers
+            var drCust = await (from n in _db.Customers
                           where n.Email == email
-                          select n).FirstOrDefault();
+                          select n).FirstOrDefaultAsync();
 
             if (drCust == null)
                 return null;
@@ -48,7 +48,7 @@ namespace eStore.Infrastructure.Persistance
             return custDE;
 
         }
-        public void AddCustomer(CustomerDE customerDE)
+        public async Task AddCustomer(CustomerDE customerDE)
         {
             _db.Customers.Add(new Infrastructure.Persistance.Repositories.Customer()
             {
@@ -58,11 +58,11 @@ namespace eStore.Infrastructure.Persistance
               Name= customerDE.Name
             });
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
 
-        public void AddProduct(ProductDE product)
+        public async Task AddProduct(ProductDE product)
         {
             _db.Products.Add(new Infrastructure.Persistance.Repositories.Product()
             {
@@ -75,28 +75,28 @@ namespace eStore.Infrastructure.Persistance
                 Price = product.Price,
             });
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
-        public void ChangeProductStatus(Guid productId, ENUMS.ProductStatus newStatus)
+        public async Task ChangeProductStatus(Guid productId, ENUMS.ProductStatus newStatus)
         {
-            var dr = (from n in _db.Products
+            var dr = await (from n in _db.Products
                       where n.ProductId == productId
-                      select n).FirstOrDefault();
+                      select n).FirstOrDefaultAsync();
 
             if (dr == null)
                 throw new BusinessRuleException("Product not found");
 
             dr.Status = (int)newStatus;
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
 
         }
-        public ProductDE GetProduct(Guid productId)
+        public async Task<ProductDE> GetProduct(Guid productId)
         {
-            var dr = (from n in _db.Products
-                          where n.ProductId  == productId
-                          select n).FirstOrDefault();
+            var dr = await (from n in _db.Products
+                           where n.ProductId  == productId
+                           select n).FirstOrDefaultAsync();
 
             if (dr == null)
                 return null;
@@ -114,11 +114,11 @@ namespace eStore.Infrastructure.Persistance
             return prdDE;
 
         }
-        public ProductDE GetProductByBarcode(string barcode)
+        public async Task<ProductDE> GetProductByBarcode(string barcode)
         {
-            var dr = (from n in _db.Products
+            var dr = await (from n in _db.Products
                       where n.Barcode == barcode
-                      select n).FirstOrDefault();
+                      select n).FirstOrDefaultAsync();
 
             if (dr == null)
                 return null;
@@ -138,27 +138,26 @@ namespace eStore.Infrastructure.Persistance
         }
         
         
-        public CartDE GetCustomerCart(Guid customerId)
+        public async Task<CartDE> GetCustomerCart(Guid customerId)
         {
-            var dr = (from n in _db.Carts
+            var dr = await (from n in _db.Carts
                       where n.CustomerID == customerId
-                      select n).FirstOrDefault();
+                      select n).FirstOrDefaultAsync();
 
             if (dr == null)
                 return null;
 
-
-            var drCust = (from n in _db.Customers
+            var drCust = await (from n in _db.Customers
                           where n.CustomerId == dr.CustomerID
-                          select n).FirstOrDefault();
+                          select n).FirstOrDefaultAsync();
 
             var drProductsIDs = (from n in _db.CartProducts
                                  where n.CartId == dr.CartId
                                  select n.ProductId);
 
-            var drProducts = (from n in _db.Products
+            var drProducts = await (from n in _db.Products
                               where drProductsIDs.Contains(n.ProductId)
-                              select n).ToArray();
+                              select n).ToArrayAsync();
 
             LinkedList<ProductDE> prds = new LinkedList<ProductDE>();
 
@@ -186,11 +185,11 @@ namespace eStore.Infrastructure.Persistance
 
         }
 
-        public CartDE CreateOrUpdateCart(CartDE cart)
+        public async Task<CartDE> CreateOrUpdateCart(CartDE cart)
         {
-            var drCart = (from n in _db.Carts
+            var drCart = await (from n in _db.Carts
                           where n.CartId == cart.CartId
-                          select n).FirstOrDefault();
+                          select n).FirstOrDefaultAsync();
 
             if (drCart != null)
                 throw new Exception("Code not implmented");
@@ -203,9 +202,9 @@ namespace eStore.Infrastructure.Persistance
             };
             _db.Carts.Add(drCart);
 
-            var drCust = (from n in _db.Customers
+            var drCust = await (from n in _db.Customers
                           where n.CustomerId == drCart.CustomerID
-                          select n).FirstOrDefault();
+                          select n).FirstOrDefaultAsync();
 
             if (drCust == null)
                 throw new Exception("Customer not found");
@@ -221,18 +220,18 @@ namespace eStore.Infrastructure.Persistance
                 _db.CartProducts.Add(drCartProduct);
             }
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
 
-            return GetCustomerCart(cart.Customer.CustomerId);
+            return await GetCustomerCart(cart.Customer.CustomerId);
 
         }
 
-        public void ClearCart(Guid CartId)
+        public async Task ClearCart(Guid CartId)
         {
-            var drCart = (from n in _db.Carts
+            var drCart = await (from n in _db.Carts
                           where n.CartId == CartId
-                          select n).FirstOrDefault();
+                          select n).FirstOrDefaultAsync();
 
             if (drCart == null)
                 throw new Exception("cart not found");
@@ -247,18 +246,15 @@ namespace eStore.Infrastructure.Persistance
                 _db.CartProducts.Remove(p);
             }
 
-            _db.SaveChanges();
-
-
-            
+            await _db.SaveChangesAsync();
 
         }
 
-        public InvoiceDE CreateInvoice(InvoiceDE entity)
+        public async Task<InvoiceDE> CreateInvoice(InvoiceDE entity)
         {
-            var drInvoice = (from n in _db.Invoices
+            var drInvoice =await (from n in _db.Invoices
                           where n.InvoiceId == entity.InvoiceId
-                          select n).FirstOrDefault();
+                          select n).FirstOrDefaultAsync();
 
             if (drInvoice != null)
                 throw new Exception("Invoice already exsist");
@@ -274,8 +270,7 @@ namespace eStore.Infrastructure.Persistance
             
             _db.Invoices.Add(drInvoice);
 
-            _db.SaveChanges();
-
+            await _db.SaveChangesAsync();
 
             return entity;
 

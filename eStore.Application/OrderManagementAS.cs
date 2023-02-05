@@ -19,14 +19,14 @@ namespace eStore.Application
     public class OrderManagementAS
     {
 
-        public GetCartResponse GetCart(GetCartRequest request)
+        public async Task<GetCartResponse> GetCart(GetCartRequest request)
         {
             var response = new GetCartResponse();
 
             var gr = new GenericRepositery();
             try
             {
-                var cartDE = gr.GetCustomerCart(request.CustomerId);
+                var cartDE = await gr.GetCustomerCart(request.CustomerId);
 
                 if (cartDE == null)
                 {
@@ -55,19 +55,19 @@ namespace eStore.Application
             return response;
         }
 
-        public CreateOrUpdateCartResponse CreateOrUpdateCart(CreateOrUpdateCartRequest request)
+        public async Task<CreateOrUpdateCartResponse> CreateOrUpdateCart(CreateOrUpdateCartRequest request)
         {
             var response = new CreateOrUpdateCartResponse();
 
             var gr = new GenericRepositery();
             try
             {
-                var cartDE = gr.GetCustomerCart(request.CustomerId);
+                var cartDE = await gr.GetCustomerCart(request.CustomerId);
 
 
                 if (cartDE == null)
                 {
-                    var custDE = gr.GetCustomer(request.CustomerId);
+                    var custDE = await gr.GetCustomer(request.CustomerId);
                     if (custDE == null)
                     {
                         throw new BusinessRuleException("Customer not found");
@@ -78,12 +78,12 @@ namespace eStore.Application
 
                 foreach (var drPrdID in request.ProductIds)
                 {
-                    var drPrdDE = gr.GetProduct(drPrdID);
+                    var drPrdDE = await gr.GetProduct(drPrdID);
 
                     cartDE.AddProduct(drPrdDE);
                 }
 
-                var c = gr.CreateOrUpdateCart(cartDE);
+                var c = await gr.CreateOrUpdateCart(cartDE);
 
                 response.Cart = c.Adapt<CartDto>();
                 response.IsSuccess = true;
@@ -106,21 +106,21 @@ namespace eStore.Application
             return response;
         }
 
-        public CheckOutCartResponse CheckOutCart(CheckOutCartRequest request)
+        public async Task<CheckOutCartResponse> CheckOutCart(CheckOutCartRequest request)
         {
             var response = new CheckOutCartResponse();
 
             var gr = new GenericRepositery();
             try
             {
-                var cartDE = gr.GetCustomerCart(request.CustomerId);
+                var cartDE = await gr.GetCustomerCart(request.CustomerId);
 
                 if (cartDE == null)              
                    throw new BusinessRuleException("Cart or customer not found");
 
                 var invoiceDE = cartDE.CreateOrder();
 
-                gr.CreateInvoice(invoiceDE);
+                await gr.CreateInvoice(invoiceDE);
 
                 response.CustomerId = cartDE.Customer.CustomerId;
                 response.Invoice = invoiceDE.Adapt<InvoiceDto>();
@@ -128,7 +128,7 @@ namespace eStore.Application
 
                 try
                 {
-                    gr.ClearCart(cartDE.CartId);
+                    await gr.ClearCart(cartDE.CartId);
                 }
                 catch (Exception ee)
                 {

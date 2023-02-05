@@ -17,13 +17,13 @@ namespace eStore.Api.Controllers
         }
         
         [HttpPost("GetCart")]
-        public GetCartResponse GetCart(GetCartRequest request)
+        public async Task<GetCartResponse> GetCart(GetCartRequest request)
         {
             GetCartResponse response;
             try
             {
                 var IM = new OrderManagementAS();
-                response = IM.GetCart(request);
+                response = await IM.GetCart(request);
                 return response;
             }
 
@@ -39,13 +39,13 @@ namespace eStore.Api.Controllers
         }
 
         [HttpPost("CreateOrUpdateCart")]
-        public CreateOrUpdateCartResponse CreateOrUpdateCart(CreateOrUpdateCartRequest request)
+        public async Task<CreateOrUpdateCartResponse> CreateOrUpdateCart(CreateOrUpdateCartRequest request)
         {
             CreateOrUpdateCartResponse response;
             try
             {
                 var IM = new OrderManagementAS();
-                response = IM.CreateOrUpdateCart(request);
+                response = await IM.CreateOrUpdateCart(request);
                 return response;
             }
 
@@ -61,13 +61,13 @@ namespace eStore.Api.Controllers
         }
 
         [HttpPost("CheckOutCart")]
-        public CheckOutCartResponse CheckOutCart(CheckOutCartRequest request)
+        public async Task<CheckOutCartResponse> CheckOutCart(CheckOutCartRequest request)
         {
             CheckOutCartResponse response;
             try
             {
                 var IM = new OrderManagementAS();
-                response = IM.CheckOutCart(request);
+                response = await IM.CheckOutCart(request);
                 return response;
             }
 
