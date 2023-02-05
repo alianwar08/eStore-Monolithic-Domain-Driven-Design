@@ -38,7 +38,7 @@ namespace eStore.Infrastructure.Persistance
         //    => options.UseSqlite($"Data Source={DbPath}");
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var ConnectionString = @"data source = Localhost\MSSQLSERVER2; initial catalog = InventoryDb; persist security info = True; user id = sa; password = Conxepts1!; multipleactiveresultsets = True;TrustServerCertificate=True; application name =$Application_Name$";
+            var ConnectionString = @"data source = Localhost\MSSQLSERVER2; initial catalog = InventoryDb; persist security info = True; user id = sa; password = Pass1!; multipleactiveresultsets = True;TrustServerCertificate=True; application name =$Application_Name$";
             optionsBuilder.UseSqlServer(ConnectionString);
         }
 
